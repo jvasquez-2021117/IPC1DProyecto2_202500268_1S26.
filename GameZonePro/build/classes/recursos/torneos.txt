@@ -1,0 +1,4 @@
+TOR-001|Torneo de Apertura|FIFA 25|26/04/2026|14:00|75.0|3
+TOR-002|Batalla Épica|Street Fighter 6|27/04/2026|16:30|60.0|4
+TOR-003|Copa Battle Royale|Fortnite|28/04/2026|18:00|50.0|6
+TOR-004|Liga Extrema|Mario Kart 8 Deluxe|29/04/2026|15:00|40.0|3

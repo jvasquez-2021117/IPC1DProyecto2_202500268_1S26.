@@ -24,6 +24,7 @@ public class VentanaPrincipal extends JFrame {
     private PanelMenu panelMenu;
     private PanelTienda panelTienda;
     private PanelAlbum panelAlbum;
+    private PanelTorneos panelTorneos;
     
     public VentanaPrincipal() {
         configurarVentana();
@@ -38,6 +39,10 @@ public class VentanaPrincipal extends JFrame {
             public void windowClosing(WindowEvent e) {
                 if (panelAlbum != null) {
                     panelAlbum.guardarDatos();
+                }
+
+                if (panelTorneos != null) {
+                    panelTorneos.guardarDatos();
                 }
             }
         });
@@ -58,10 +63,12 @@ public class VentanaPrincipal extends JFrame {
         panelMenu = new PanelMenu();
         panelTienda = new PanelTienda();
         panelAlbum = new PanelAlbum();
+        panelTorneos = new PanelTorneos();
 
         contenedor.add(panelMenu, "MENU");
         contenedor.add(panelTienda, "TIENDA");
         contenedor.add(panelAlbum, "ALBUM");
+        contenedor.add(panelTorneos, "TORNEOS");
 
         add(contenedor);
 
@@ -88,6 +95,14 @@ public class VentanaPrincipal extends JFrame {
         
         panelMenu.getBtnSalir().addActionListener(e -> {
             dispose();
+        });
+        
+        panelMenu.getBtnTorneos().addActionListener(e -> {
+            cardLayout.show(contenedor, "TORNEOS");
+        });
+
+        panelTorneos.getBtnVolver().addActionListener(e -> {
+            cardLayout.show(contenedor, "MENU");
         });
     }
     

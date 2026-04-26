@@ -24,9 +24,162 @@ import estructuras.NodoMatriz;
 import java.io.File;
 import java.io.PrintWriter;
 import modelo.Carta;
+import modelo.TicketVendido;
+import modelo.Torneo;
 
 
 public class ArchivoService {
+    
+    public ListaSimple cargarTicketsVendidos() {
+        
+        String ruta = "src/recursos/tickets_vendidos.txt";
+        
+        ListaSimple ticketsVendidos = new ListaSimple();
+        File archivo = new File(ruta);
+
+        if (!archivo.exists()) {
+            return ticketsVendidos;
+        }
+
+        BufferedReader lector = null;
+
+        try {
+            lector = new BufferedReader(new FileReader(archivo));
+            String linea;
+
+            while ((linea = lector.readLine()) != null) {
+                linea = linea.trim();
+
+                if (linea.isEmpty()) {
+                    continue;
+                }
+
+                String[] partes = linea.split("\\|", -1);
+
+                if (partes.length < 7) {
+                    continue;
+                }
+
+                String fechaHoraVenta = partes[0];
+                String taquilla = partes[1];
+                String nombreUsuario = partes[2];
+                String idTorneo = partes[3];
+                String nombreTorneo = partes[4];
+                String juego = partes[5];
+                double precio = Double.parseDouble(partes[6]);
+
+                TicketVendido ticket = new TicketVendido(
+                        nombreUsuario,
+                        idTorneo,
+                        nombreTorneo,
+                        juego,
+                        precio,
+                        taquilla,
+                        fechaHoraVenta
+                );
+
+                insertarTicketCargado(ticketsVendidos, ticket);
+            }
+
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error al cargar tickets_vendidos.txt: " + e.getMessage());
+        } finally {
+            try {
+                if (lector != null) {
+                    lector.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+
+        return ticketsVendidos;
+    }
+    
+    private void insertarTicketCargado(ListaSimple lista, TicketVendido ticket) {
+        lista.insertarAlFinal(ticket);
+    }
+    
+    public void guardarTicketsVendidos(ListaSimple ticketsVendidos) {
+        
+        String ruta = "src/recursos/tickets_vendidos.txt";
+        
+        if (ticketsVendidos == null) {
+            return;
+        }
+
+        PrintWriter escritor = null;
+
+        try {
+            escritor = new PrintWriter(new FileWriter(ruta, false));
+
+            NodoSimple actual = ticketsVendidos.getCabeza();
+
+            while (actual != null) {
+                TicketVendido ticket = (TicketVendido) actual.getDato();
+
+                escritor.println(
+                        ticket.getFechaHoraVenta() + "|"
+                        + ticket.getTaquilla() + "|"
+                        + ticket.getNombreUsuario() + "|"
+                        + ticket.getIdTorneo() + "|"
+                        + ticket.getNombreTorneo() + "|"
+                        + ticket.getJuego() + "|"
+                        + ticket.getPrecio()
+                );
+
+                actual = actual.getSiguiente();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar tickets_vendidos.txt: " + e.getMessage());
+        } finally {
+            if (escritor != null) {
+                escritor.close();
+            }
+        }
+    }
+    
+    
+    public void guardarTorneos(ListaSimple torneos) {
+        
+        String ruta = "src/recursos/torneos.txt";
+        
+        if (torneos == null) {
+            return;
+        }
+
+        PrintWriter escritor = null;
+
+        try {
+            escritor = new PrintWriter(new FileWriter(ruta, false));
+
+            NodoSimple actual = torneos.getCabeza();
+
+            while (actual != null) {
+                Torneo torneo = (Torneo) actual.getDato();
+
+                escritor.println(
+                        torneo.getIdTorneo() + "|"
+                        + torneo.getNombre() + "|"
+                        + torneo.getJuego() + "|"
+                        + torneo.getFecha() + "|"
+                        + torneo.getHora() + "|"
+                        + torneo.getPrecioTicket() + "|"
+                        + torneo.getTicketsDisponibles()
+                );
+
+                actual = actual.getSiguiente();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar torneos.txt: " + e.getMessage());
+        } finally {
+            if (escritor != null) {
+                escritor.close();
+            }
+        }
+    }
+    
     
     public void guardarAlbum(Album album) {
         String ruta = "src/recursos/album.txt";
