@@ -3,23 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/main/Main.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/vista/VentanaPrincipal.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/vista/PanelMenu.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/vista/PanelTienda.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/modelo/Juego.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/recursos/catalogo.txt</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/servicios/ArchivoService.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/estructuras/ListaSimple.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/estructuras/NodoSimple.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/modelo/ItemCarrito.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/servicios/TiendaService.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/modelo/DetalleCompra.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/modelo/Compra.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/modelo/Carta.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/estructuras/NodoMatriz.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/estructuras/Album.java</file>
-            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/servicios/AlbumService.java</file>
+            <file>file:/C:/Users/vqzjo/OneDrive/Escritorio/IPC%20Proyectos/GameZonePro/GameZonePro/src/vista/PanelAlbum.java</file>
         </group>
     </open-files>
 </project-private>

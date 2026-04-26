@@ -1,0 +1,2 @@
+DIMENSIONES|4|6
+

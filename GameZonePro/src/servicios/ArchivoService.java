@@ -19,9 +19,147 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import modelo.Compra;
 import modelo.DetalleCompra;
+import estructuras.Album;
+import estructuras.NodoMatriz;
+import java.io.File;
+import java.io.PrintWriter;
+import modelo.Carta;
 
 
 public class ArchivoService {
+    
+    public void guardarAlbum(Album album) {
+        String ruta = "src/recursos/album.txt";
+        if (album == null) {
+            return;
+        }
+
+        PrintWriter escritor = null;
+
+        try {
+            escritor = new PrintWriter(new FileWriter(ruta, false));
+
+            escritor.println("DIMENSIONES|" + album.getFilas() + "|" + album.getColumnas());
+
+            NodoMatriz filaActual = album.getCabeza();
+
+            while (filaActual != null) {
+                NodoMatriz columnaActual = filaActual;
+
+                while (columnaActual != null) {
+                    Carta carta = columnaActual.getDato();
+
+                    if (carta != null) {
+                        escritor.println(
+                                columnaActual.getFila() + "|"
+                                + columnaActual.getColumna() + "|"
+                                + carta.getCodigo() + "|"
+                                + carta.getNombre() + "|"
+                                + carta.getTipo() + "|"
+                                + carta.getRareza() + "|"
+                                + carta.getAtaque() + "|"
+                                + carta.getDefensa() + "|"
+                                + carta.getPs() + "|"
+                                + carta.getImagen()
+                        );
+                    }
+
+                    columnaActual = columnaActual.getDerecha();
+                }
+
+                filaActual = filaActual.getAbajo();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar album.txt: " + e.getMessage());
+        } finally {
+            if (escritor != null) {
+                escritor.close();
+            }
+        }
+    }
+    
+    public Album cargarAlbumDesdeArchivo() {
+        String ruta = "src/recursos/album.txt";
+        File archivo = new File(ruta);
+
+        if (!archivo.exists()) {
+            return new Album(4, 6);
+        }
+
+        BufferedReader lector = null;
+
+        try {
+            lector = new BufferedReader(new FileReader(archivo));
+
+            String linea = lector.readLine();
+
+            if (linea == null || linea.trim().isEmpty()) {
+                return new Album(4, 6);
+            }
+
+            String[] partesDimension = linea.split("\\|");
+
+            if (partesDimension.length < 3 || !partesDimension[0].equalsIgnoreCase("DIMENSIONES")) {
+                return new Album(4, 6);
+            }
+
+            int filas = Integer.parseInt(partesDimension[1]);
+            int columnas = Integer.parseInt(partesDimension[2]);
+
+            Album album = new Album(filas, columnas);
+
+            while ((linea = lector.readLine()) != null) {
+                linea = linea.trim();
+
+                if (linea.isEmpty()) {
+                    continue;
+                }
+
+                String[] partes = linea.split("\\|", -1);
+
+                if (partes.length < 10) {
+                    continue;
+                }
+
+                int fila = Integer.parseInt(partes[0]);
+                int columna = Integer.parseInt(partes[1]);
+                String codigo = partes[2];
+                String nombre = partes[3];
+                String tipo = partes[4];
+                String rareza = partes[5];
+                int ataque = Integer.parseInt(partes[6]);
+                int defensa = Integer.parseInt(partes[7]);
+                int ps = Integer.parseInt(partes[8]);
+                String imagen = partes[9];
+
+                Carta carta = new Carta(
+                        codigo,
+                        nombre,
+                        tipo,
+                        rareza,
+                        ataque,
+                        defensa,
+                        ps,
+                        imagen
+                );
+
+                album.colocarCartaEn(fila, columna, carta);
+            }
+
+            return album;
+
+        } catch (IOException | NumberFormatException e) {
+            return new Album(4, 6);
+        } finally {
+            try {
+                if (lector != null) {
+                    lector.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
     
     public ListaSimple cargarCatalogoDesdeArchivo() {
         ListaSimple catalogo = new ListaSimple();

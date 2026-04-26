@@ -12,6 +12,8 @@ package vista;
 import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class VentanaPrincipal extends JFrame {
@@ -21,11 +23,24 @@ public class VentanaPrincipal extends JFrame {
 
     private PanelMenu panelMenu;
     private PanelTienda panelTienda;
+    private PanelAlbum panelAlbum;
     
     public VentanaPrincipal() {
         configurarVentana();
         inicializarContenedor();
         configurarEventos();
+        configurarCierre();
+    }
+    
+    private void configurarCierre() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (panelAlbum != null) {
+                    panelAlbum.guardarDatos();
+                }
+            }
+        });
     }
     
 
@@ -42,9 +57,11 @@ public class VentanaPrincipal extends JFrame {
 
         panelMenu = new PanelMenu();
         panelTienda = new PanelTienda();
+        panelAlbum = new PanelAlbum();
 
         contenedor.add(panelMenu, "MENU");
         contenedor.add(panelTienda, "TIENDA");
+        contenedor.add(panelAlbum, "ALBUM");
 
         add(contenedor);
 
@@ -55,11 +72,20 @@ public class VentanaPrincipal extends JFrame {
         panelMenu.getBtnTienda().addActionListener(e -> {
             cardLayout.show(contenedor, "TIENDA");
         });
+        
+        panelMenu.getBtnAlbum().addActionListener(e -> {
+            cardLayout.show(contenedor, "ALBUM");
+        });
 
         panelTienda.getBtnVolver().addActionListener(e -> {
             cardLayout.show(contenedor, "MENU");
         });
 
+        
+        panelAlbum.getBtnVolver().addActionListener(e -> {
+            cardLayout.show(contenedor, "MENU");
+        });
+        
         panelMenu.getBtnSalir().addActionListener(e -> {
             dispose();
         });
