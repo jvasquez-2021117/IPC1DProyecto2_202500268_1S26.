@@ -36,6 +36,7 @@ import modelo.Carta;
 import servicios.AlbumService;
 import servicios.ArchivoService;
 import estructuras.Album;
+import servicios.GamificacionService;
 
 public class PanelAlbum extends JPanel {
 
@@ -55,10 +56,16 @@ public class PanelAlbum extends JPanel {
     private NodoMatriz nodoSeleccionado;
     private NodoMatriz primeraSeleccionIntercambio;
     private ArchivoService archivoService;
+    private GamificacionService gamificacionService;
 
     public PanelAlbum() {
-        albumService = new AlbumService();
-        archivoService = new ArchivoService();
+        this(new GamificacionService("Jugador Actual"));
+    }
+
+    public PanelAlbum(GamificacionService gamificacionService) {
+        this.albumService = new AlbumService();
+        this.archivoService = new ArchivoService();
+        this.gamificacionService = gamificacionService;
 
         inicializarComponentes();
         cargarDatos();
@@ -145,6 +152,13 @@ public class PanelAlbum extends JPanel {
         add(titulo, BorderLayout.NORTH);
         add(splitPrincipal, BorderLayout.CENTER);
         add(btnVolver, BorderLayout.SOUTH);
+    }
+    
+    private void guardarGamificacion() {
+        archivoService.guardarLeaderboard(
+                gamificacionService.getLeaderboardOrdenadoParaGuardar(),
+                gamificacionService.getCantidadLeaderboard()
+        );
     }
     
     public void guardarDatos() {
@@ -387,9 +401,26 @@ public class PanelAlbum extends JPanel {
             String resultado = albumService.agregarCarta(carta);
 
             if (resultado == null) {
+                StringBuilder resumenGamificacion = new StringBuilder();
+
+                String resumenCarta = gamificacionService.registrarCartaAgregada(carta.esLegendaria());
+                resumenGamificacion.append(resumenCarta);
+
+                NodoMatriz nodoInsertado = albumService.buscarNodoPorCodigo(carta.getCodigo());
+
+                if (nodoInsertado != null && albumService.filaEstaCompleta(nodoInsertado.getFila())) {
+                    String resumenFila = gamificacionService.registrarFilaCompletaAlbum();
+                    resumenGamificacion.append("\n\n").append(resumenFila);
+                }
+
                 archivoService.guardarAlbum(albumService.getAlbum());
-                JOptionPane.showMessageDialog(this, "Carta agregada correctamente.");
+                guardarGamificacion();
                 refrescarVista();
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Carta agregada correctamente.\n\n" + resumenGamificacion.toString()
+                );
             } else {
                 JOptionPane.showMessageDialog(this, resultado);
             }

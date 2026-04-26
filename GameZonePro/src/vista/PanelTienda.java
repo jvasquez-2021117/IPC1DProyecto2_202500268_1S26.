@@ -35,6 +35,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JComboBox;
 import java.awt.Cursor;
+import servicios.GamificacionService;
 
 public class PanelTienda extends JPanel {
     
@@ -56,10 +57,16 @@ public class PanelTienda extends JPanel {
     private JTextArea areaDetallesJuego;
     private JButton btnAgregarDetalle;
     private Juego juegoSeleccionado;
+    private GamificacionService gamificacionService;
     
     public PanelTienda() {
-        tiendaService = new TiendaService();
-        archivoService = new ArchivoService();
+        this(new GamificacionService("Jugador Actual"));
+    }
+
+    public PanelTienda(GamificacionService gamificacionService) {
+        this.tiendaService = new TiendaService();
+        this.archivoService = new ArchivoService();
+        this.gamificacionService = gamificacionService;
 
         inicializarComponentes();
         cargarCatalogo();
@@ -208,6 +215,26 @@ public class PanelTienda extends JPanel {
         add(titulo, BorderLayout.NORTH);
         add(splitPane, BorderLayout.CENTER);
         add(btnVolver, BorderLayout.SOUTH);
+    }
+    
+    private int contarCantidadJuegosEnCarrito() {
+        int cantidadTotal = 0;
+        NodoSimple actual = tiendaService.getCarrito().getCabeza();
+
+        while (actual != null) {
+            ItemCarrito item = (ItemCarrito) actual.getDato();
+            cantidadTotal += item.getCantidad();
+            actual = actual.getSiguiente();
+        }
+
+        return cantidadTotal;
+    }
+    
+    private void guardarGamificacion() {
+        archivoService.guardarLeaderboard(
+                gamificacionService.getLeaderboardOrdenadoParaGuardar(),
+                gamificacionService.getCantidadLeaderboard()
+        );
     }
     
     private void cargarCatalogo() {
@@ -392,12 +419,24 @@ public class PanelTienda extends JPanel {
             actual = actual.getSiguiente();
         }
 
-        JOptionPane.showMessageDialog(this,
-                "Compra realizada con éxito. Total: Q" + tiendaService.calcularTotalCarrito());
+        double totalCompra = tiendaService.calcularTotalCarrito();
+        int cantidadJuegosComprados = contarCantidadJuegosEnCarrito();
+
+        String resumenGamificacion = gamificacionService.registrarCompraJuego(
+                cantidadJuegosComprados,
+                totalCompra
+        );
+        guardarGamificacion();
 
         tiendaService.registrarCompra();
         archivoService.guardarHistorialCompras(tiendaService.getHistorialCompras());
         archivoService.guardarCatalogo(catalogo);
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Compra realizada con éxito. Total: Q" + totalCompra + "\n\n" + resumenGamificacion
+        );
+
         actualizarHistorial();
         tiendaService.vaciarCarrito();
         actualizarAreaCarrito();

@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import servicios.GamificacionService;
 
 
 public class VentanaPrincipal extends JFrame {
@@ -25,6 +26,8 @@ public class VentanaPrincipal extends JFrame {
     private PanelTienda panelTienda;
     private PanelAlbum panelAlbum;
     private PanelTorneos panelTorneos;
+    private PanelGamificacion panelGamificacion;
+    private GamificacionService gamificacionService;
     
     public VentanaPrincipal() {
         configurarVentana();
@@ -59,16 +62,23 @@ public class VentanaPrincipal extends JFrame {
     private void inicializarContenedor() {
         cardLayout = new CardLayout();
         contenedor = new JPanel(cardLayout);
+        
+        gamificacionService = new GamificacionService("Jugador Actual");
 
         panelMenu = new PanelMenu();
-        panelTienda = new PanelTienda();
-        panelAlbum = new PanelAlbum();
-        panelTorneos = new PanelTorneos();
+        panelTienda = new PanelTienda(gamificacionService);
+        panelAlbum = new PanelAlbum(gamificacionService);
+        panelTorneos = new PanelTorneos(gamificacionService);
+        panelGamificacion = new PanelGamificacion(gamificacionService);
+        
+        gamificacionService.registrarInicioSesion();
+        panelGamificacion.guardarDatos();
 
         contenedor.add(panelMenu, "MENU");
         contenedor.add(panelTienda, "TIENDA");
         contenedor.add(panelAlbum, "ALBUM");
         contenedor.add(panelTorneos, "TORNEOS");
+        contenedor.add(panelGamificacion, "GAMIFICACION");
 
         add(contenedor);
 
@@ -102,6 +112,15 @@ public class VentanaPrincipal extends JFrame {
         });
 
         panelTorneos.getBtnVolver().addActionListener(e -> {
+            cardLayout.show(contenedor, "MENU");
+        });
+        
+        panelMenu.getBtnGamificacion().addActionListener(e -> {
+            panelGamificacion.refrescarDatosExternos();
+            cardLayout.show(contenedor, "GAMIFICACION");
+        });
+
+        panelGamificacion.getBtnVolver().addActionListener(e -> {
             cardLayout.show(contenedor, "MENU");
         });
     }

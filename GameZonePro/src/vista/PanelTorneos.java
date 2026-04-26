@@ -31,6 +31,7 @@ import servicios.TorneoService;
 import util.EscuchadorTaquilla;
 import util.TaquillaThread;
 import estructuras.ListaSimple;
+import servicios.GamificacionService;
 
 public class PanelTorneos extends JPanel implements EscuchadorTaquilla {
     
@@ -58,12 +59,17 @@ public class PanelTorneos extends JPanel implements EscuchadorTaquilla {
     private boolean ventaEnProceso;
     
     private ArchivoService archivoService;
+    private GamificacionService gamificacionService;
 
     public PanelTorneos() {
-        torneoService = new TorneoService();
-        archivoService = new ArchivoService();
-        ventaEnProceso = false;
-        
+        this(new GamificacionService("Jugador Actual"));
+    }
+
+    public PanelTorneos(GamificacionService gamificacionService) {
+        this.torneoService = new TorneoService();
+        this.archivoService = new ArchivoService();
+        this.gamificacionService = gamificacionService;
+        this.ventaEnProceso = false;
 
         inicializarComponentes();
         cargarDatos();
@@ -257,6 +263,13 @@ public class PanelTorneos extends JPanel implements EscuchadorTaquilla {
 
         return null;
     }
+    
+    private void guardarGamificacion() {
+        archivoService.guardarLeaderboard(
+                gamificacionService.getLeaderboardOrdenadoParaGuardar(),
+                gamificacionService.getCantidadLeaderboard()
+        );
+    }
 
     private void inscribirUsuario() {
         if (ventaEnProceso) {
@@ -274,13 +287,20 @@ public class PanelTorneos extends JPanel implements EscuchadorTaquilla {
         String resultado = torneoService.inscribirUsuario(nombreUsuario);
 
         if (resultado == null) {
-            JOptionPane.showMessageDialog(this, "Usuario agregado a la cola.");
+            String resumenGamificacion = gamificacionService.registrarInscripcionTorneo();
+            guardarGamificacion();
+
             txtNombreUsuario.setText("");
             refrescarCola();
 
             if (torneoService.getTamanioCola() > 0) {
                 listaTorneos.setEnabled(false);
             }
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Usuario agregado a la cola.\n\n" + resumenGamificacion
+            );
         } else {
             JOptionPane.showMessageDialog(this, resultado);
         }

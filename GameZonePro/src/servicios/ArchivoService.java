@@ -26,9 +26,115 @@ import java.io.PrintWriter;
 import modelo.Carta;
 import modelo.TicketVendido;
 import modelo.Torneo;
+import modelo.UsuarioGamificacion;
 
 
 public class ArchivoService {
+    
+    public void guardarLeaderboard(UsuarioGamificacion[] leaderboard, int cantidad) {
+        
+        String ruta = "src/recursos/leaderboard.txt";
+        
+        if (leaderboard == null) {
+            return;
+        }
+
+        PrintWriter escritor = null;
+
+        try {
+            escritor = new PrintWriter(new FileWriter(ruta, false));
+
+            for (int i = 0; i < cantidad && i < leaderboard.length; i++) {
+                if (leaderboard[i] != null) {
+                    escritor.println(
+                            leaderboard[i].getNombreUsuario() + "|"
+                            + leaderboard[i].getXp()
+                    );
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error al guardar leaderboard.txt: " + e.getMessage());
+        } finally {
+            if (escritor != null) {
+                escritor.close();
+            }
+        }
+    }
+    
+    
+    public int obtenerCantidadLeaderboard(UsuarioGamificacion[] leaderboard) {
+        if (leaderboard == null) {
+            return 0;
+        }
+
+        int contador = 0;
+
+        for (int i = 0; i < leaderboard.length; i++) {
+            if (leaderboard[i] != null) {
+                contador++;
+            }
+        }
+
+        return contador;
+    }
+    
+    public UsuarioGamificacion[] cargarLeaderboard() {
+        
+        
+        String ruta = "src/recursos/leaderboard.txt";
+        
+        UsuarioGamificacion[] leaderboard = new UsuarioGamificacion[100];
+        File archivo = new File(ruta);
+
+        if (!archivo.exists()) {
+            return leaderboard;
+        }
+
+        BufferedReader lector = null;
+
+        try {
+            lector = new BufferedReader(new FileReader(archivo));
+            String linea;
+            int indice = 0;
+
+            while ((linea = lector.readLine()) != null && indice < leaderboard.length) {
+                linea = linea.trim();
+
+                if (linea.isEmpty()) {
+                    continue;
+                }
+
+                String[] partes = linea.split("\\|", -1);
+
+                if (partes.length < 2) {
+                    continue;
+                }
+
+                String nombreUsuario = partes[0].trim();
+                int xp = Integer.parseInt(partes[1].trim());
+
+                if (nombreUsuario.isEmpty()) {
+                    continue;
+                }
+
+                leaderboard[indice] = new UsuarioGamificacion(nombreUsuario, xp);
+                indice++;
+            }
+
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error al cargar leaderboard.txt: " + e.getMessage());
+        } finally {
+            try {
+                if (lector != null) {
+                    lector.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+
+        return leaderboard;
+    }
     
     public ListaSimple cargarTicketsVendidos() {
         

@@ -1,5 +1,5 @@
-J001|The Witcher 3|RPG|250.0|PC|9|Juego de rol y aventura
+J001|The Witcher 3|RPG|250.0|PC|8|Juego de rol y aventura
 J002|FIFA 24|Deportes|375.0|PlayStation|8|Simulador de futbol
 J003|Resident Evil 4|Terror|420.0|Xbox|5|Supervivencia y horror
-J004|Zelda TOTK|Aventura|450.0|Nintendo Switch|5|Exploracion y aventura epica
+J004|Zelda TOTK|Aventura|450.0|Nintendo Switch|4|Exploracion y aventura epica
 J005|Call of Duty|Accion|390.0|PC|12|Shooter en primera persona
