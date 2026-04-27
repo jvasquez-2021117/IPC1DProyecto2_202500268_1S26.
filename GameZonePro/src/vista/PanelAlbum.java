@@ -38,6 +38,7 @@ import servicios.ArchivoService;
 import estructuras.Album;
 import servicios.GamificacionService;
 
+
 public class PanelAlbum extends JPanel {
 
     private JButton btnVolver;
@@ -518,5 +519,9 @@ public class PanelAlbum extends JPanel {
 
     public JButton getBtnVolver() {
         return btnVolver;
+    }
+    
+    public Album getAlbumActual() {
+        return albumService.getAlbum();
     }
 }

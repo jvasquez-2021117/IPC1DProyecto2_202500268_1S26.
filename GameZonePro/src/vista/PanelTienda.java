@@ -600,4 +600,12 @@ public class PanelTienda extends JPanel {
         return areaCarrito;
     }
     
+    public ListaSimple getCatalogoActual() {
+    return catalogo;
+}
+
+    public ListaSimple getHistorialComprasActual() {
+        return tiendaService.getHistorialCompras();
+    }
+    
 }

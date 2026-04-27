@@ -33,6 +33,7 @@ import util.TaquillaThread;
 import estructuras.ListaSimple;
 import servicios.GamificacionService;
 
+
 public class PanelTorneos extends JPanel implements EscuchadorTaquilla {
     
     private JButton btnVolver;
@@ -60,6 +61,7 @@ public class PanelTorneos extends JPanel implements EscuchadorTaquilla {
     
     private ArchivoService archivoService;
     private GamificacionService gamificacionService;
+    private PanelReportes panelReportes;
 
     public PanelTorneos() {
         this(new GamificacionService("Jugador Actual"));
@@ -408,6 +410,14 @@ public class PanelTorneos extends JPanel implements EscuchadorTaquilla {
 
     public JButton getBtnVolver() {
         return btnVolver;
+    }
+    
+    public ListaSimple getTorneosActuales() {
+        return torneoService.getTorneos();
+    }
+
+    public ListaSimple getTicketsVendidosActuales() {
+        return torneoService.getTicketsVendidos();
     }
     
 }
