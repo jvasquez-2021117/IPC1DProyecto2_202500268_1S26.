@@ -29,6 +29,7 @@ public class VentanaPrincipal extends JFrame {
     private PanelGamificacion panelGamificacion;
     private GamificacionService gamificacionService;
     private PanelReportes panelReportes;
+    private PanelDatosEstudiante panelDatosEstudiante;
     
     public VentanaPrincipal() {
         configurarVentana();
@@ -72,6 +73,7 @@ public class VentanaPrincipal extends JFrame {
         panelTorneos = new PanelTorneos(gamificacionService);
         panelGamificacion = new PanelGamificacion(gamificacionService);
         panelReportes = new PanelReportes(panelTienda, panelAlbum, panelTorneos);
+        panelDatosEstudiante = new PanelDatosEstudiante();
         
         gamificacionService.registrarInicioSesion();
         panelGamificacion.guardarDatos();
@@ -82,6 +84,7 @@ public class VentanaPrincipal extends JFrame {
         contenedor.add(panelTorneos, "TORNEOS");
         contenedor.add(panelGamificacion, "GAMIFICACION");
         contenedor.add(panelReportes, "REPORTES");
+        contenedor.add(panelDatosEstudiante, "DATOS_ESTUDIANTE");
 
         add(contenedor);
 
@@ -132,6 +135,14 @@ public class VentanaPrincipal extends JFrame {
         });
 
         panelReportes.getBtnVolver().addActionListener(e -> {
+            cardLayout.show(contenedor, "MENU");
+        });
+        
+        panelMenu.getBtnDatosEstudiante().addActionListener(e -> {
+            cardLayout.show(contenedor, "DATOS_ESTUDIANTE");
+        });
+
+        panelDatosEstudiante.getBtnVolver().addActionListener(e -> {
             cardLayout.show(contenedor, "MENU");
         });
     }

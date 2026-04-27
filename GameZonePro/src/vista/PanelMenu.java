@@ -24,6 +24,7 @@ public class PanelMenu extends JPanel {
     private JButton btnGamificacion;
     private JButton btnReportes;
     private JButton btnSalir;
+    private JButton btnDatosEstudiante;
     
     public PanelMenu() {
         inicializarComponentes();
@@ -33,7 +34,7 @@ public class PanelMenu extends JPanel {
         setLayout(new BorderLayout());
 
         JPanel panelCentral = new JPanel();
-        panelCentral.setLayout(new GridLayout(7, 1, 10, 10));
+        panelCentral.setLayout(new GridLayout(8, 1, 10, 10));
         panelCentral.setBorder(BorderFactory.createEmptyBorder(20, 100, 50, 100)); // margenes en px, arriba, izquierda, abajo, derech
 
         JLabel titulo = new JLabel("GAMEZONE PRO", JLabel.CENTER);
@@ -43,6 +44,7 @@ public class PanelMenu extends JPanel {
         btnTorneos = new JButton("Eventos Especiales");
         btnGamificacion = new JButton("Gamificación");
         btnReportes = new JButton("Reportes");
+        btnDatosEstudiante = new JButton("Ver Datos del Estudiante");
         btnSalir = new JButton("Salir");
 
         panelCentral.add(titulo);
@@ -51,6 +53,7 @@ public class PanelMenu extends JPanel {
         panelCentral.add(btnTorneos);
         panelCentral.add(btnGamificacion);
         panelCentral.add(btnReportes);
+        panelCentral.add(btnDatosEstudiante);
         panelCentral.add(btnSalir);
 
         add(panelCentral, BorderLayout.CENTER);
@@ -76,6 +79,10 @@ public class PanelMenu extends JPanel {
         return btnReportes;
     }
 
+    public JButton getBtnDatosEstudiante() {
+        return btnDatosEstudiante;
+    }
+    
     public JButton getBtnSalir() {
         return btnSalir;
     }

@@ -1,6 +1,6 @@
 Maria|4100
 Luis|2500
 Carlos|1200
-Jugador Actual|1030
+Jugador Actual|1100
 Ana|850
 Steven|0
